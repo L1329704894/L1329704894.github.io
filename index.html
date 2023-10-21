@@ -1,0 +1,104 @@
+第二次实验代码
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct BintreeNode
+{
+	char data[10];
+	struct BintreeNode* leftchild;
+	struct BintreeNode* rightchild;
+};
+typedef struct BintreeNode* Bintree;
+typedef struct BintreeNode BintreeNode;
+
+Bintree Create_Bintree()  //创建二叉树
+{
+	char ch[10];
+	Bintree bt;
+	scanf("%s", ch);
+	if (ch[0] == '@')
+		bt = NULL;
+	else
+	{
+		bt = (Bintree)malloc(sizeof(struct BintreeNode));
+		strcpy(bt->data, ch);
+		bt->leftchild = Create_Bintree();
+		bt->rightchild = Create_Bintree();
+	}
+	return bt;
+}
+
+void Preoder_Bintree(Bintree bt) //先序遍历二叉树
+{
+	if (bt == NULL) return;
+	else
+	{
+		printf("%s ",bt->data);
+		Preoder_Bintree(bt->leftchild);
+		Preoder_Bintree(bt->rightchild);
+	}
+}
+
+void Inorder_Bintree(Bintree bt) //中序遍历二叉树 
+{
+	if (bt == NULL) return;
+	else
+	{
+		Inorder_Bintree(bt->leftchild);
+		printf("%s ",bt->data);
+		Inorder_Bintree(bt->rightchild);
+	}
+}
+
+void  Postorder_Bintree(Bintree bt)  //后序遍历二叉树 
+{
+	if (bt == NULL) return;
+	else
+	{
+		Postorder_Bintree(bt->leftchild);
+		Postorder_Bintree(bt->rightchild);
+		printf("%s ",bt->data);
+	}
+}
+
+void Change_Child(Bintree bt)  //交换左右孩子结点 
+{
+	Bintree p;
+	if(bt->leftchild==NULL&&bt->rightchild==NULL) return;
+	else if((bt->leftchild==NULL&&bt->rightchild!=NULL)||(bt->leftchild!=NULL&&bt->rightchild==NULL))
+	{
+		p=bt->leftchild;
+		bt->leftchild=bt->rightchild;
+		bt->rightchild=p;
+	}
+	else
+	{
+		Change_Child(bt->leftchild); 
+		Change_Child(bt->rightchild); 
+		p=bt->leftchild;
+		bt->leftchild=bt->rightchild;
+		bt->rightchild=p;
+	}
+} 
+
+
+int main()
+{
+	Bintree bt;
+	bt = Create_Bintree();
+	printf("先序遍历顺序为："); 
+	Preoder_Bintree(bt);
+	printf("\n中序遍历顺序为：");
+	Inorder_Bintree(bt);
+	printf("\n后序遍历顺序为：");
+	Postorder_Bintree(bt);
+	printf("\n将二叉树的所有左右结点孩子进行交换"); 
+	Change_Child(bt);
+	printf("\n先序遍历顺序为："); 
+	Preoder_Bintree(bt);
+	printf("\n中序遍历顺序为：");
+	Inorder_Bintree(bt);
+	printf("\n后序遍历顺序为：");
+	Postorder_Bintree(bt);
+}
